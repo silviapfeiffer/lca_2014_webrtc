@@ -1,4 +1,16 @@
-#deck.js
+#LCA 2014 Multimedia Miniconf Talk
+"A node.js toolbox for WebRTC application development"
+
+See: http://www.annodex.org/events/lca2014_mmm/pmwiki.php/Main/Timetable#silvia
+
+Abstract:
+
+WebRTC is enabling a revolution of web-based communications, but it can be tricky to get started. We've developed a toolbox of modules to enable Web application developers to make use of peer-to-peer audio, video or data functionalities. The modules can be used as JavaScript libraries, but are easiest deployed using node.js. See https://www.rtc.io/ for more information.
+
+In the spirit of WebRTC this presentation will be given remotely.
+
+
+#Built with: deck.js
 
 A JavaScript library for building modern HTML presentations. deck.js is flexible enough to let advanced CSS and JavaScript authors craft highly customized decks, but also provides templates and themes for the HTML novice to build a standard slideshow.
 
