@@ -14521,6 +14521,7 @@ exports.couple = require('./couple');
   ```
 **/
 exports.createConnection = function(opts, constraints) {
+  constraints = {"optional": [{'DtlsSrtpKeyAgreement': 'false'}]};
   return new RTCPeerConnection(
     // generate the config based on options provided
     gen.config(opts),
