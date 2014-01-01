@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=1024, user-scalable=no">
+  <meta name="rtc-signalhost" content="http://sig.rtc.io:50000">
+
+  <title>LCA 2014: A node.js toolbox for WebRTC</title>
+
+  <!-- Required stylesheet -->
+  <link rel="stylesheet" href="core/deck.core.css">
+
+  <!-- Extension CSS files go here. Remove or add as needed. -->
+  <link rel="stylesheet" media="screen" href="extensions/navigation/deck.navigation.css">
+  <link rel="stylesheet" media="screen" href="extensions/status/deck.status.css">
+  <link rel="stylesheet" media="screen" href="extensions/hash/deck.hash.css">
+  <link rel="stylesheet" media="screen" href="extensions/scale/deck.scale.css">
+
+  <!-- Style theme. More available in /themes/style/ or create your own. -->
+  <link rel="stylesheet" media="screen" href="themes/style/neon.css">
+
+  <!-- Transition theme. More available in /themes/transition/ or create your own. -->
+  <link rel="stylesheet" media="screen" href="themes/transition/vertical-slide.css">
+
+  <!-- Basic black and white print styles -->
+  <link rel="stylesheet" media="print" href="core/print.css">
+
+  <!-- Required Modernizr file -->
+  <script src="modernizr.custom.js"></script>
+</head>
+<body>
+  <div class="deck-container">
+    <video id="localV" rtc-capture="camera" muted style="width:112px; height:84px; width:280px; height:210px; position:absolute; top:0; right:0; z-index:200">
+    </video>
+    <video id="peerV" rtc-peer rtc-stream="localV" style="width:280px; height:210px; position:absolute; top:0; right:0; z-index:100"></video>
+
+    <!-- Begin slides. Just make elements with a class of slide. -->
+
+    <section class="slide" id="title-slide">
+      <h1>rtc.io: A node.js toolbox for WebRTC</h1>
+      <h2>Silvia Pfeiffer, NICTA</h2>
+    </section>
+
+    <section class="slide" id="overview-slide">
+      <h2>WebRTC Real-Time Communication</h2>
+      <ol>
+        <li>
+          <h3>P2P Video / Audio / Data</h3>
+          <p>browser-to-browser ; open source code stack</p>
+        </li>
+        <li>
+          <h3>Plugin-free in browser</h3>
+          <p>Native JavaScript API</p>
+        </li>
+        <li>
+          <h3>Higher quality of service</h3>
+          <p>Low latency, modern codecs, encryption, firewalls</p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="slide" id="overview-graph">
+      <h2>WebRTC Overview</h2>
+      <img src="images/webrtc_topology.png" alt="webrtc graph with web server, signalling server and two peers" width="80%">
+      <ul>
+        <li>Web Server = Apache on localhost</li>
+        <li>Signaling Server = sig.rtc.io:50000</li>
+      </ul>
+    </section>
+
+    <section class="slide" id="rtcio-intro">
+      <h2>NICTA project: <a href="http://rtc-io">http://rtc.io</a></h2>
+      <div style="width:50%; float:left;">
+        <img src="images/rtcio_logo.png" alt="rtcio mascot">
+      </div>
+      <div style="width:50%; float:right;">
+        <br/>
+        <ul>
+          <li class="slide">Meet Artsio</li>
+          <li class="slide">Artsio simplifies coding on client</li>
+          <li class="slide">Artsio provides node.js modules</li>
+          <li class="slide">including a signaling server</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="slide" id="glue-intro">
+      <h2><img src="images/artsio.png" alt="artsio" style="float:left; margin-bottom:0"> Here is my simplest HTML page</h2>
+      <pre><code>
+&lt;meta name="rtc-signalhost" content="http://sig.rtc.io:50000">
+
+&lt;video id="local" rtc-capture="camera" muted>&lt;/video>
+&lt;video rtc-peer rtc-stream="local">&lt;/video>
+
+&lt;script src="glue.js">&lt;/script></code></pre>
+      <p>Download glue.js from rtc-glue: <a href="https://raw.github.com/rtc-io/rtc-glue/master/dist/glue.js">https://raw.github.com/rtc-io/rtc-glue/master/dist/glue.js</a></p>
+      <p>No JavaScript coding - fully declarative!</p>
+    </section>
+
+    <section class="slide" id="signaling-server">
+      <h2><img src="images/artsio.png" alt="artsio" style="float:left; margin-bottom:0"> <a href="https://github.com/rtc-io/rtc-switchboard">rtc-switchboard</a> is my<br/> node.js signaling server</h2>
+      <pre><code>var server = require('http').createServer();
+var switchboard = require('rtc-switchboard')(server);
+var port = 50000;
+
+// start the server
+server.listen(port, function(err) {
+  if (err) {
+    return console.log('Error starting server: ', err);
+  }
+  console.log('server running on port: ' + port);
+});</code></pre>
+      <p>Uses http://primus.io as websocket server (abstraction layer from real-time node frameworks such as socket.io or engine.io).</p>
+    </section>
+
+    <!-- End slides. -->
+
+  <!-- Begin extension snippets. Add or remove as needed. -->
+
+    <!-- deck.status snippet -->
+    <p class="deck-status">
+      <span class="deck-status-current"></span>
+      /
+      <span class="deck-status-total"></span>
+    </p>
+
+  <!-- End extension snippets. -->
+  </div>
+
+<!-- Required JS files. -->
+<script src="jquery.min.js"></script>
+<script src="core/deck.core.js"></script>
+
+<!-- Extension JS files. Add or remove as needed. -->
+<script src="core/deck.core.js"></script>
+<script src="extensions/hash/deck.hash.js"></script>
+<script src="extensions/status/deck.status.js"></script>
+<script src="extensions/navigation/deck.navigation.js"></script>
+<script src="extensions/scale/deck.scale.js"></script>
+
+<!-- rtc.io -->
+<script src="rtc-glue.js"></script>
+<script>
+peerV.addEventListener('loadedmetadata', function() {
+  localV.style.display="none";
+});
+</script>
+
+<!-- Initialize the deck. You can put this in an external file if desired. -->
+<script>
+  $(function() {
+    $.deck('.slide');
+  });
+</script>
+</body>
+</html>
