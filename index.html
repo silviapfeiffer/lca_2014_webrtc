@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=1024, user-scalable=no">
-  <meta name="rtc-signalhost" content="http://sig.rtc.io:50000">
+  <meta name="rtc-signalhost" content="http://rtc.io/switchboard/">
   <meta name="rtc-room" content="demo">
 
   <title>LCA 2014: A node.js toolbox for WebRTC</title>
@@ -32,9 +32,9 @@
 </head>
 <body>
   <div class="deck-container">
-    <video id="localV" rtc-capture="camera" muted style="width:112px; height:84px; width:280px; height:210px; position:absolute; top:0; right:0; z-index:200">
+    <video id="localV" rtc-capture="camera" muted style="width:112px; height:84px; width:280px; height:210px; position:absolute; top:0; right:0; z-index:200; border: 3px solid #f0a;">
     </video>
-    <video id="peerV" rtc-peer rtc-stream="localV" style="width:280px; height:210px; position:absolute; top:0; right:0; z-index:100"></video>
+    <video id="peerV" rtc-peer rtc-stream="localV" style="width:280px; height:210px; position:absolute; top:0; right:0; z-index:100; border: 3px solid #f0a;"></video>
 
     <!-- Begin slides. Just make elements with a class of slide. -->
 
@@ -66,7 +66,7 @@
       <img src="images/webrtc_topology.png" alt="webrtc graph with web server, signalling server and two peers" width="80%">
       <ul>
         <li>Web Server = Apache on localhost</li>
-        <li>Signaling Server = sig.rtc.io:50000</li>
+        <li>Signaling Server = rtc.io/switchboard/</li>
       </ul>
     </section>
 
@@ -86,10 +86,14 @@
       </div>
     </section>
 
+    <section class="slide" id="title-glue">
+      <h1>1. Fully declarative<br/> video connection</h1>
+    </section>
+
     <section class="slide" id="glue-intro">
-      <h2><img src="images/artsio.png" alt="artsio" style="float:left; margin-bottom:0"> Here is my simplest HTML page</h2>
+      <h2><img src="images/artsio.png" alt="artsio" style="float:left; margin-bottom:0"> My simplest HTML page</h2>
       <pre><code>
-&lt;meta name="rtc-signalhost" content="http://sig.rtc.io:50000">
+&lt;meta name="rtc-signalhost" content="http://rtc.io/switchboard/">
 
 &lt;video id="local" rtc-capture="camera" muted>&lt;/video>
 &lt;video rtc-peer rtc-stream="local">&lt;/video>
@@ -97,10 +101,29 @@
 &lt;script src="glue.js">&lt;/script></code></pre>
       <p>Download glue.js from rtc-glue: <a href="https://raw.github.com/rtc-io/rtc-glue/master/dist/glue.js">https://raw.github.com/rtc-io/rtc-glue/master/dist/glue.js</a></p>
       <p>No JavaScript coding - fully declarative!</p>
+      <p>Check out http://chrome:webrtc-internals</p>
+    </section>
+
+    <section class="slide" id="glue-demoapp">
+      <h2>Demo application for rtc-glue</h2>
+      <p><a href="https://github.com/rtc-io/rtcio-demo-peerconnection">https://github.com/rtc-io/rtcio-demo-peerconnection</a></p>
+      <ul>
+        <li>uses <a href="http://nodejs.org/">node.js</a> with <a href="http://expressjs.com/">express</a> as Web server</li>
+        <li>uses <a href="https://github.com/rtc-io/rtc-glue">rtc-glue</a> client-side</li>
+        <li>uses <a href="https://github.com/rtc-io/rtc-switchboard">rtc-switchboard</a> as Signaling server</li>
+      </ul>
+    </section>
+
+    <section class="slide" id="glue-screenshot">
+      <img src="images/glue-screenshot.png" alt="screenshot of rtcio-demo-peerconnection"/>
+    </section>
+
+    <section class="slide" id="title-switchboard">
+      <h1>2. Running a<br/>Signalling Server</h1>
     </section>
 
     <section class="slide" id="signaling-server">
-      <h2><img src="images/artsio.png" alt="artsio" style="float:left; margin-bottom:0"> <a href="https://github.com/rtc-io/rtc-switchboard">rtc-switchboard</a> is my<br/> node.js signaling server</h2>
+      <h2><img src="images/artsio.png" alt="artsio" style="float:left; margin-bottom:0"> <a href="https://github.com/rtc-io/rtc-switchboard">rtc-switchboard</a> is my<br/> node.js signalling server</h2>
       <pre><code>var server = require('http').createServer();
 var switchboard = require('rtc-switchboard')(server);
 var port = 50000;
@@ -113,6 +136,173 @@ server.listen(port, function(err) {
   console.log('server running on port: ' + port);
 });</code></pre>
       <p>Uses http://primus.io as websocket server (abstraction layer from real-time node frameworks such as socket.io or engine.io).</p>
+    </section>
+
+    <section class="slide" id="switchboard-demoapp">
+      <h2>Demo application for rtc-switchboard</h2>
+      <p><a href="https://github.com/rtc-io/rtcio-demo-signaller">https://github.com/rtc-io/rtcio-demo-signaller</a></p>
+      <ul>
+        <li>uses <a href="http://nodejs.org/">node.js</a> with <a href="http://expressjs.com/">express</a> as Web server</li>
+        <li>uses <a href="https://github.com/rtc-io/rtc-signaller">rtc-signaller</a> for client side signalling</li>
+        <li>uses <a href="https://github.com/rtc-io/rtc-switchboard">rtc-switchboard</a> for server side signalling</li>
+      </ul>
+    </section>
+
+    <section class="slide" id="switchboard-screenshot">
+      <img src="images/switchboard-screenshot.png" alt="screenshot of rtcio-demo-signaller"/>
+    </section>
+
+    <section class="slide" id="title-quickconnect">
+      <h1>3. Node.js based<br/>Peer Connection</h1>
+    </section>
+
+    <section class="slide" id="quickconnect">
+      <h2><img src="images/artsio.png" alt="artsio" style="float:left; margin-bottom:0"> More control<br/> client-side (JS only)</h2>
+      <ul>
+        <li><a href="https://github.com/rtc-io/rtc-media">rtc-media</a> for camera/mike access</li>
+        <li><a href="https://github.com/rtc-io/rtc-quickconnect">rtc-quickconnect</a> for peer connection</li>
+        <li>built for <a href="http://nodejs.org/">node.js</a></li>
+      </ul>
+    </section>
+
+    <section class="slide" id="quickconnect-demo">
+      <h2>rtc-media and rtc-quickconnect demo</h2>
+      <pre><code>var quickconnect = require('rtc-quickconnect');
+var media = require('rtc-media');
+
+var local = createElement('div', { class: 'local' });
+var remote = createElement('div', { class: 'remote' });
+
+var localMedia = media();
+localMedia.render(local);
+
+function handleConnect(conn, id, data, monitor) {
+  conn.addStream(localMedia.stream);
+  conn.addEventListener('addstream', function(evt) {
+    media(evt.stream).render(remote);
+  });
+}
+
+quickconnect({ data: true, ns: 'conftest', signalhost: 'http://rtc.io/switchboard/' })
+  .on('peer', handleConnect)
+  .on('leave', handleLeave);</code></pre>
+    </section>
+
+    <section class="slide" id="quickconnect-demoapp">
+      <h2>Demo application for<br/> rtc-quickconnect</h2>
+      <p><a href="https://github.com/rtc-io/rtcio-demo-quickconnect">https://github.com/rtc-io/rtcio-demo-quickconnect</a></p>
+      <ul>
+        <li>uses <a href="http://nodejs.org/">node.js</a> with <a href="http://expressjs.com/">express</a> as Web server</li>
+        <li>uses <a href="https://github.com/rtc-io/rtc-media">rtc-media</a> for camera/mike access</li>
+        <li><a href="https://github.com/rtc-io/rtc-quickconnect">rtc-quickconnect</a> for peer connection</li>
+        <li>uses <a href="https://github.com/rtc-io/rtc-switchboard">rtc-switchboard</a> for server side signalling</li>
+      </ul>
+    </section>
+
+    <section class="slide" id="quickconnect-screenshot">
+      <img src="images/quickconnect-screenshot.png" alt="screenshot of rtcio-demo-quickconnect"/>
+    </section>
+
+    <section class="slide" id="title-mesh">
+      <h1>4. Node.js based<br/> P2P data exchange</h1>
+    </section>
+
+    <section class="slide" id="mesh">
+      <h2><img src="images/artsio.png" alt="artsio" style="float:left; margin-bottom:0"> When I only need<br/> a data channel</h2>
+      <ul>
+        <li><a href="https://github.com/rtc-io/rtc-mesh">rtc-mesh</a> for peer connection</li>
+        <li>built for <a href="http://nodejs.org/">node.js</a></li>
+      </ul>
+    </section>
+
+    <section class="slide" id="mesh-demo">
+      <h2>rtc-mesh demo</h2>
+      <pre><code>var mesh = require('rtc-mesh');
+
+mesh.use('http://rtc.io/switchboard/');
+mesh.join('meshdemo-simple', function(err, m) {
+  if (err) {
+    return console.error('could not connect: ', err);
+  }
+
+  m.on('data:update', function(key, value) {
+    console.log('key: ' + key + ', set to: ', value);
+  });
+
+  // update the last join time for the shared data
+  m.data.set('lastjoin', Date.now());
+});</code></pre>
+    </section>
+
+    <section class="slide" id="mesh-demoapp">
+      <h2>Demo application for rtc-mesh</h2>
+      <p><a href="https://github.com/rtc-io/rtcio-demo-mesh">https://github.com/rtc-io/rtcio-demo-mesh</a></p>
+      <ul>
+        <li>uses <a href="http://nodejs.org/">node.js</a> with <a href="http://expressjs.com/">express</a> as Web server</li>
+        <li>uses <a href="https://github.com/rtc-io/rtc-mesh">rtc-mesh</a> for peer connection</li>
+        <li>uses <a href="https://github.com/rtc-io/rtc-switchboard">rtc-switchboard</a> for server side signalling</li>
+      </ul>
+    </section>
+
+    <section class="slide" id="mesh-screenshot">
+      <img src="images/mesh-screenshot.png" alt="screenshot of rtcio-demo-mesh"/>
+    </section>
+
+    <section class="slide" id="title-firewalls">
+      <h1>5. Dealing with Firewalls</h1>
+    </section>
+
+    <section class="slide" id="STUN-graph">
+      <h2>STUN server: resolve IP address</h2>
+      <img src="images/stun_topology.png" alt="screenshot of rtc connection using STUN" style="float:left;"/>
+    </section>
+
+    <section class="slide" id="TURN-graph">
+      <h2>TURN server: stream forwarding</h2>
+      <img src="images/turn_topology.png" alt="screenshot of rtc connection using TURN" style="float:left;"/>
+    </section>
+
+    <section class="slide" id="firewall-sw">
+      <h2>Software to run<br/> STUN/TURN servers</h2>
+      <ul>
+        <li><a href="https://code.google.com/p/rfc5766-turn-server/">rfc5766-turn-server</a></li>
+        <li><a href="http://www.creytiv.com/restund.html">restund</a></li>
+      </ul>
+    </section>
+
+    <section class="slide" id="firewall-demo">
+      <h2>Including STUN/TURN info<br/> into the peer connection</h2>
+      <pre><code>
+var pc_config = {
+  "iceServers":[
+    {"url": "stun:stun.l.google.com:19302"},
+    {'url': 'turn:192.158.29.39:3478?transport=udp',
+     'credential': 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+     'username': '28224511:1379330808'
+    },
+    {'url': 'turn:192.158.29.39:3478?transport=tcp',
+     'credential': 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+     'username': '28224511:1379330808'
+    }
+]};
+
+pc = new RTCPeerConnection(pc_config);
+</code></pre>
+    </section>
+
+    <section class="slide" id="final">
+      <h2>Contact</h2>
+      <div style="width:50%; float:left;">
+        <img src="images/rtcio_logo.png" alt="rtcio mascot">
+        <p>WebRTC spec: <a href="http://www.w3.org/TR/webrtc/">http://www.w3.org/TR/webrtc/</a></p>
+      </div>
+      <div style="width:50%; float:right;">
+        <p>Email: silviapfeiffer1@gmail.com</p>
+        <p>Twitter: <a href="https://twitter.com/silviapfeiffer">@silviapfeiffer</a></p>
+        <p>Slides: <a href="http://html5videoguide.net/presentations/lca_2014_webrtc/">http://html5videoguide.net/presentations/lca_2014_webrtc/</a></p>
+        <p>---</p>
+        <p>Project: <a href="https://rtc.io/">https://rtc.io/</a></p>
+        <p>GitHub: <a href="https://github.com/rtc-io">https://github.com/rtc-io</a></p>
     </section>
 
     <!-- End slides. -->
@@ -146,6 +336,7 @@ server.listen(port, function(err) {
 peerV.addEventListener('loadedmetadata', function() {
   localV.style.display="none";
 });
+
 </script>
 
 <!-- Initialize the deck. You can put this in an external file if desired. -->
