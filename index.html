@@ -331,19 +331,58 @@ pc = new RTCPeerConnection(pc_config);
 <script src="extensions/scale/deck.scale.js"></script>
 
 <!-- rtc.io -->
-<script src="rtc-glue.js"></script>
+<script src="glue.js"></script>
 <script>
+// provide ice servers config
+// you can make config changes here because glue will not initialise until
+// the window is loaded
+glue.config.iceServers = [
+  { url: 'stun:rtcjs.io' },
+  {
+    url: 'turn:192.158.29.39:3478?transport=udp',
+    credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+    username: '28224511:1379330808'
+  },
+  {
+    url: 'turn:192.158.29.39:3478?transport=tcp',
+   credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+   username: '28224511:1379330808'
+  }
+];
+
+// initialise the room
+glue.config.room = 'webrtc-lca-2014';
+
 peerV.addEventListener('loadedmetadata', function() {
   localV.style.display="none";
 });
 
-</script>
+// listen for connected events
+glue.events.once('connected', function(signaller) {
+  // if we have something in the query string of the location, then
+  // communicate slide changes
+  if (location.search.slice(1) !== '') {
+    // handle deck changes
+    $(document).bind('deck.change', function(evt, from, to) {
+      // send the slide update message via the signaller
+      signaller.send('/slide', {
+        idx: to,
+        sender: signaller.id
+      });
+    });
+  }
 
-<!-- Initialize the deck. You can put this in an external file if desired. -->
-<script>
-  $(function() {
-    $.deck('.slide');
+  signaller.on('slide', function(data) {
+    console.log('received notification to change to slide: ', data.idx);
+    $.deck('go', data.idx);
   });
+});
+
+
+// initialise the deck
+$(function() {
+  $.deck('.slide');
+});
 </script>
 </body>
 </html>
