@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=1024, user-scalable=no">
   <meta name="rtc-signalhost" content="http://rtc.io/switchboard/">
-  <meta name="rtc-room" content="demo">
+  <meta name="rtc-room" content="webrtc-lca-2014">
 
   <title>LCA 2014: A node.js toolbox for WebRTC</title>
 
@@ -74,6 +74,7 @@
       <h2>NICTA project: <a href="http://rtc-io">http://rtc.io</a></h2>
       <div style="width:50%; float:left;">
         <img src="images/rtcio_logo.png" alt="rtcio mascot">
+        <p>Main author: Damon Oehlman</p>
       </div>
       <div style="width:50%; float:right;">
         <br/>
@@ -101,7 +102,7 @@
 &lt;script src="glue.js">&lt;/script></code></pre>
       <p>Download glue.js from rtc-glue: <a href="https://raw.github.com/rtc-io/rtc-glue/master/dist/glue.js">https://raw.github.com/rtc-io/rtc-glue/master/dist/glue.js</a></p>
       <p>No JavaScript coding - fully declarative!</p>
-      <p>Check out http://chrome:webrtc-internals</p>
+      <p>Check out chrome://webrtc-internals</p>
     </section>
 
     <section class="slide" id="glue-demoapp">
@@ -275,7 +276,7 @@ mesh.join('meshdemo-simple', function(err, m) {
       <pre><code>
 var pc_config = {
   "iceServers":[
-    {"url": "stun:stun.l.google.com:19302"},
+    {'url': 'stun:stun.l.google.com:19302'},
     {'url': 'turn:192.158.29.39:3478?transport=udp',
      'credential': 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
      'username': '28224511:1379330808'
@@ -297,8 +298,9 @@ pc = new RTCPeerConnection(pc_config);
         <p>WebRTC spec: <a href="http://www.w3.org/TR/webrtc/">http://www.w3.org/TR/webrtc/</a></p>
       </div>
       <div style="width:50%; float:right;">
-        <p>Email: silviapfeiffer1@gmail.com</p>
-        <p>Twitter: <a href="https://twitter.com/silviapfeiffer">@silviapfeiffer</a></p>
+        <p>&nbsp;</p>
+        <p>Email: silvia.pfeiffer@nicta.com.au</p>
+        <p>Email: damon.oehlman@nicta.com.au</p>
         <p>Slides: <a href="http://html5videoguide.net/presentations/lca_2014_webrtc/">http://html5videoguide.net/presentations/lca_2014_webrtc/</a></p>
         <p>---</p>
         <p>Project: <a href="https://rtc.io/">https://rtc.io/</a></p>
@@ -351,7 +353,8 @@ glue.config.iceServers = [
 ];
 
 // initialise the room
-glue.config.room = 'webrtc-lca-2014';
+// not necessary - done in <meta> tag
+//glue.config.room = 'webrtc-lca-2014';
 
 peerV.addEventListener('loadedmetadata', function() {
   localV.style.display="none";
