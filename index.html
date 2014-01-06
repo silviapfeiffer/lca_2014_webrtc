@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=1024, user-scalable=no">
   <meta name="rtc-signalhost" content="http://rtc.io/switchboard/">
-  <meta name="rtc-room" content="webrtc-lca-2014">
+  <meta name="rtc-room" content="lca2014">
 
   <title>LCA 2014: A node.js toolbox for WebRTC</title>
 
@@ -32,7 +32,7 @@
 </head>
 <body>
   <div class="deck-container">
-    <video id="localV" rtc-capture="camera" muted style="width:112px; height:84px; width:280px; height:210px; position:absolute; top:0; right:0; z-index:200; border: 3px solid #f0a;">
+    <video id="localV" rtc-capture="camera" muted style="width:112px; height:84px; position:absolute; bottom:5px; right:0; z-index:200; border: 3px solid #f0a;">
     </video>
     <video id="peerV" rtc-peer rtc-stream="localV" style="width:280px; height:210px; position:absolute; top:0; right:0; z-index:100; border: 3px solid #f0a;"></video>
 
@@ -351,14 +351,6 @@ glue.config.iceServers = [
    username: '28224511:1379330808'
   }
 ];
-
-// initialise the room
-// not necessary - done in <meta> tag
-//glue.config.room = 'webrtc-lca-2014';
-
-peerV.addEventListener('loadedmetadata', function() {
-  localV.style.display="none";
-});
 
 // listen for connected events
 glue.events.once('connected', function(signaller) {
