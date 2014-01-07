@@ -180,7 +180,7 @@ a:link {
 
 /* End HTML5 Boilerplate adaptations */
 h1 {
-  font-size: 4.5em;
+  font-size: 100px;
 }
 
 h1, .vcenter {
@@ -214,7 +214,7 @@ h1, .vcenter {
 }
 
 h2 {
-  font-size: 2.25em;
+  font-size: 63px;
   font-weight: bold;
   padding-top: .5em;
   margin: 0 0 .66666em 0;
@@ -365,7 +365,7 @@ a:hover, a:focus {
   background: #000;
 }
 .deck-container > .slide {
-  padding: 0 48px;
+  padding: 0 48px 0 20px;
 }
 
 .slide .deck-before, .slide .deck-previous {
